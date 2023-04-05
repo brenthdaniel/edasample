@@ -1,0 +1,28 @@
+GET http://localhost:5050/beers
+
+POST http://localhost:5050/beers HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+GET http://localhost:5050/users
+
+POST http://localhost:5050/users HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+userName=bob
+
+
+POST http://localhost:5050/checkins HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+beerName=Pilsner&rating=4&comments=good
+
+GET http://localhost:5050/checkins/IPA HTTP/1.1
+
+GET http://localhost:5050/checkins/Pilsner HTTP/1.1
+
+GET http://localhost:5050/beers/2 HTTP/1.1
