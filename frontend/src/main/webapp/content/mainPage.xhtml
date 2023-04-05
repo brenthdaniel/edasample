@@ -1,0 +1,74 @@
+<!--
+  Copyright (c) 2018 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head></h:head>
+<h:body>
+  <ui:composition>
+    <h1 class="list">Click on the left buttons to:</h1>
+    <h:outputText class="list tab"
+      value="&#8226; &#8201; See list of current beers" />
+    <br />
+    <h:outputText class="list tab"
+      value="&#8226; &#8201; Create a new beer" />
+    <br />
+    <div id="listOfbeers">
+      <div class="forms_title" style="line-height: 0;">
+        <h2>Current Beers</h2>
+      </div>
+      <br />
+      <h:form id="mainform">
+        <h:outputText style="font-size: 1.1vw;" value="No beers are currently available."
+          rendered="#{empty beerBean.retrieveBeerList()}" />
+        <h:dataTable value="#{beerBean.retrieveBeerList()}" var="beer"
+          styleClass="beer-table" headerClass="beer-table-header"
+          columnClasses="column1,column2,column3,column4,column5,column6"
+          rendered="#{not empty beerBean.retrieveBeerList()}">
+          <h:column>
+            <f:facet name="header">Beer ID</f:facet>
+            #{beer.getInt("id")}
+          </h:column>
+          <h:column>
+            <f:facet name="header">Brewery</f:facet>
+            #{beer.getString("breweryName")}
+          </h:column> 
+          <h:column>
+            <f:facet name="header">Name</f:facet>
+            #{beer.getString("name")}
+          </h:column>
+          <h:column>
+            <f:facet name="header"></f:facet>
+            <h:commandLink class="beersLink" value="Update"
+              action="#{beerBean.editBeer()}">
+              <f:actionListener binding="#{beerBean.setSelectedId(beer.getInt('id'))}" />
+              <f:ajax execute="mainform" render=":content header" />
+            </h:commandLink>
+          </h:column>
+          <h:column>
+            <f:facet name="header"></f:facet>
+            <h:commandLink class="beersLink" value="Delete"
+              action="#{beerBean.submitDeletetoService()}">
+              <f:actionListener binding="#{beerBean.setSelectedId(beer.getInt('id'))}" />
+              <f:ajax execute="mainform" render=":content header" />
+            </h:commandLink>
+          </h:column>
+        </h:dataTable>
+      </h:form>
+    </div>
+  </ui:composition>
+</h:body>
+</html>

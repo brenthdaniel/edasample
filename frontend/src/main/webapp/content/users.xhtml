@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head></h:head>
+<h:body>
+  <ui:composition>   
+    <div id="checkins">
+      <div class="forms_title" style="line-height: 0;">
+        <h2>All Users</h2>
+      </div>
+      <br />
+      <h:form id="mainform">
+        <h:outputText style="font-size: 1.1vw;" value="No users are currently available."
+          rendered="#{empty userBean.getUsers()}" />
+        <h:dataTable value="#{userBean.getUsers()}" var="user"
+          styleClass="beer-table" headerClass="beer-table-header"
+          columnClasses="column1,column2,column3,column4,column5,column6"
+          rendered="#{not empty userBean.getUsers()}">         
+          <h:column>
+            <f:facet name="header">Name</f:facet>
+            #{user.getString("name")}
+          </h:column>   
+          <h:column>
+            <f:facet name="header">Checkins</f:facet>
+            #{user.getInt("checkins")}
+          </h:column>               
+        </h:dataTable>
+      </h:form>
+    </div>
+  </ui:composition>
+</h:body>
+</html>

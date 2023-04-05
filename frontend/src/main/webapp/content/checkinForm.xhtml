@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<!--
+  Copyright (c) 2018 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:jsf="http://xmlns.jcp.org/jsf"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<head jsf:id="head">
+<title>Checkin Form</title>
+</head>
+<body jsf:id="body">
+  <ui:composition>
+    <div class="forms">
+      <div class="forms_title" style="line-height: 0;">
+        <h2>Checkin</h2>
+      </div>
+      <br />
+      <h:form id="checkinform">      
+        <f:event listener="#{checkinBean.setCurrentComponent}" type="postValidate" />
+        Beer       
+        <br />
+        <h:selectOneMenu id="beerNameField" value="#{checkinBean.beerID}"
+          required="true"
+          requiredMessage="Beer name is required" >
+          <f:selectItems value="#{beerBean.retrieveBeerList()}" var="beer"
+             itemLabel='#{beer.getString("breweryName")} #{beer.getString("name")}' itemValue='#{beer.getInt("id")}'/>        
+        </h:selectOneMenu>
+        <h:message for="beerNameField" style="color:red" />
+        <br />
+        <h:selectOneMenu id="userNameField" value="#{checkinBean.userID}"
+          required="true"
+          requiredMessage="User name is required" >
+          <f:selectItems value="#{userBean.getUsers()}" var="user"
+             itemLabel='#{user.getString("name")}' itemValue='#{user.getInt("id")}'/>        
+        </h:selectOneMenu>
+        <h:message for="beerNameField" style="color:red" />
+        <br />
+        Rating
+        <br />
+        <h:selectOneMenu id="ratingField" value="#{checkinBean.rating}" required="true" requiredMessage="Rating is required">
+            <f:selectItem itemValue = "1" itemLabel="1"/>
+            <f:selectItem itemValue = "2" itemLabel="2"/>
+            <f:selectItem itemValue = "3" itemLabel="3"/>
+            <f:selectItem itemValue = "4" itemLabel="4"/>
+            <f:selectItem itemValue = "5" itemLabel="5"/>
+        </h:selectOneMenu>
+        <h:message for="ratingField" style="color:red"/>
+        <br/>
+        Comments
+        <br />
+        <h:inputTextarea id="commentsField" value="#{checkinBean.comments}" row="5" col="40" required="true" requiredMessage="Comments are required"/>
+        <h:message for="commentsField" style="color:red"/>
+        <br/>
+        <br/>
+        <h:panelGroup rendered="#{checkinBean.notValid}">    
+          <h:inputHidden id="checkinSubmit" ></h:inputHidden>
+        </h:panelGroup>
+        <br />
+        <h:commandButton value="Submit" type="submit"
+          action="#{checkinBean.submitToService()}">
+          <f:ajax execute="checkinform" render=":content header"
+            resetValues="true" />
+        </h:commandButton>
+      </h:form>
+    </div>
+  </ui:composition>
+</body>
+</html>
